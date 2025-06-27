@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- Replace joy nodes with keyboard teleop -->
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen"/>
+
+    <node pkg="image_view" type="image_view" name="image_view_rgb">
+        <remap from="image" to="rgb"/>
+    </node>
+
+    <node pkg="image_view" type="image_view" name="image_view_depth">
+        <remap from="image" to="depth"/>
+    </node>
+
+    <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan">
+        <remap from="image" to="depth"/>
+        <param name="output_frame_id" value="laser"/>
+        <param name="scan_time" value="0.025" />
+    </node>
+
+    <node pkg="laser_scan_matcher" type="laser_scan_matcher_node" name="laser_scan_matcher_node" output="screen">
+        <param name="max_iterations" value="10"/>
+        <remap from="camera_info" to="camera_info"/>
+        <param name="fixed_frame" value="odom"/>
+        <param name="base_frame" value="base_frame"/>
+    </node>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_frame_to_laser" args="0.0 0.0 0.0 0.0 0.0 0.0 /base_frame /laser 50" />
+
+</launch>
