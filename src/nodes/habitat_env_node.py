@@ -205,7 +205,7 @@ class HabitatEnvNode:
         self.logger.info("env making sure agent is subscribed to sensor topics...")
         while (
             self.pub_rgb.get_num_connections() == 0
-            or self.pub_depth.get_num_connections() == 0
+            # or self.pub_depth.get_num_connections() == 0
             or self.pub_pointgoal_with_gps_compass.get_num_connections() == 0
         ):
             pass

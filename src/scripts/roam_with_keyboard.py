@@ -5,19 +5,19 @@ from src.roamers.keyboard_habitat_roamer import KeyboardHabitatRoamer
 def main():
     # parse input arguments
     parser = argparse.ArgumentParser()
-    parser.add_argument("--launch-file-path", default="launch/teleop.launch", type=str)
+    parser.add_argument("--launch-file-path", default="../visualnav-transformer/deployment/launch/vint_keyboard.launch", type=str)
     parser.add_argument(
-        "--hab-env-node-path", default="src/nodes/habitat_env_node.py", type=str
+        "--hab-env-node-path", default="src/vint_env_launcher.py", type=str
     )
     parser.add_argument(
-        "--hab-env-config-path", default="configs/pointnav_rgbd_roam.yaml", type=str
+        "--hab-env-config-path", default="configs/roam_configs/pointnav_rgbd_roam_mp3d_test_scenes.yaml", type=str
     )
     parser.add_argument("--hab-env-node-name", default="roamer_env_node", type=str)
     parser.add_argument("--episode-id", type=str, default="-1")
     parser.add_argument(
         "--scene-id",
         type=str,
-        default="data/scene_datasets/habitat-test-scenes/skokloster-castle.glb",
+        default="data/scene_datasets/mp3d/2t7WUuJeko7/2t7WUuJeko7.glb",
     )
     parser.add_argument(
         "--video-frame-period",
