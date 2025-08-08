@@ -27,6 +27,7 @@ from src.measures.top_down_map_for_roam import (
     TopDownMapForRoam,
     add_top_down_map_for_roam_to_config,
 )
+from nav_msgs.msg import Odometry
 
 
 class HabitatEnvNode:
@@ -189,6 +190,11 @@ class HabitatEnvNode:
                 "pointgoal_with_gps_compass",
                 PointGoalWithGPSCompass,
                 queue_size=self.pub_queue_size
+            )
+
+        if "PUB_ODOMETRY":
+            self.pub_odometry = rospy.Publisher(
+                "odometry", Odometry, queue_size=self.pub_queue_size
             )
 
         # subscribe from command topics
@@ -479,6 +485,26 @@ class HabitatEnvNode:
                 self.pub_pointgoal_with_gps_compass.publish(
                     observations_ros["pointgoal_with_gps_compass"]
                 )
+
+            # odometry - publish it
+            header = observations_ros["rgb"].header
+            odometry_msg = Odometry()
+            odometry_msg.header = header
+            agent_state = self.env._env.sim.get_agent_state()
+            pose = agent_state.position
+            quat = agent_state.rotation
+
+            odometry_msg.pose.pose.position.x = float(pose[0])
+            odometry_msg.pose.pose.position.y = float(pose[1])
+            odometry_msg.pose.pose.position.z = float(pose[2])
+
+            odometry_msg.pose.pose.orientation.x = float(quat.x)
+            odometry_msg.pose.pose.orientation.y = float(quat.y)
+            odometry_msg.pose.pose.orientation.z = float(quat.z)
+            odometry_msg.pose.pose.orientation.w = float(quat.w)
+
+            # publish odometry
+            self.pub_odometry.publish(odometry_msg)
 
     def make_depth_camera_info_msg(self, header, height, width):
         r"""
