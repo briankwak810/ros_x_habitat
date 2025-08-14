@@ -27,6 +27,8 @@ class PhysicsSimulator(Simulator):
 
         :returns: sensor observations from the default agent.
         """
+        # check if agent object is collidable (should be True if bullet is built)
+        # print("\n\n <PhysicsSimulator.step_physics>: agent_object.collidable:", agent_object.collidable)
         self._num_total_frames += 1
         agent = self.get_agent(self._default_agent_id)
         self._Simulator__last_state[self._default_agent_id] = agent.get_state()
@@ -40,7 +42,21 @@ class PhysicsSimulator(Simulator):
         default_agent_observations = self.get_sensor_observations(
             agent_ids=[self._default_agent_id]
         )[self._default_agent_id]
-        default_agent_observations["collided"] = agent_object.contact_test()
+
+        # check contact for obstacles over 0.1 in ws
+        
+        contact_points = self.get_physics_contact_points()
+        contact_test = False
+        # print("agent_obj object id:", agent_object.object_id)
+        for contact in contact_points:
+            if contact.object_id_a == agent_object.object_id and contact.position_on_b_in_ws.y > 0.1:
+                # print(f"My object collided with object ID: {contact.object_id_b} on position {contact.position_on_b_in_ws}")
+                contact_test = True
+            elif contact.object_id_b == agent_object.object_id and contact.position_on_a_in_ws.y > 0.1:
+                # print(f"My object collided with object ID: {contact.object_id_a} on position {contact.position_on_a_in_ws}")
+                contact_test = True
+
+        default_agent_observations["collided"] = contact_test
 
         return default_agent_observations
 

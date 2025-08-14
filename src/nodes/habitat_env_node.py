@@ -549,7 +549,7 @@ class HabitatEnvNode:
             if self.use_continuous_agent:
                 self.env.set_agent_velocities(self.linear_vel, self.angular_vel)
                 print(self.linear_vel)
-                (self.observations, _, _, info) = self.env.step()
+                (self.observations, _, _, info) = self.env.step() # steps env for physical agent / contiuous actions
             else:
                 # NOTE: Here we call HabitatEvalRLEnv.step() which dispatches
                 # to Env.step() or PhysicsEnv.step_physics() depending on
