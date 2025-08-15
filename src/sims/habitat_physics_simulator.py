@@ -171,6 +171,7 @@ class HabitatPhysicsSim(PhysicsSimulator, Simulator):
         sim_obs = super().step_physics(agent_object, time_step)
         self._prev_sim_obs = sim_obs
         observations = self._sensor_suite.get_observations(sim_obs)
+        observations["collided"] = sim_obs.get("collided", False)
         return observations
 
     def render(self, mode: str = "rgb") -> Any:

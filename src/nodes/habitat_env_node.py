@@ -28,6 +28,7 @@ from src.measures.top_down_map_for_roam import (
     add_top_down_map_for_roam_to_config,
 )
 from nav_msgs.msg import Odometry
+from std_msgs.msg import Bool
 
 
 class HabitatEnvNode:
@@ -195,6 +196,11 @@ class HabitatEnvNode:
         if "PUB_ODOMETRY":
             self.pub_odometry = rospy.Publisher(
                 "odometry", Odometry, queue_size=self.pub_queue_size
+            )
+
+        if "PUB_COLLISION":
+            self.pub_collision = rospy.Publisher(
+                "collision", Bool, queue_size=self.pub_queue_size
             )
 
         # subscribe from command topics
@@ -505,6 +511,11 @@ class HabitatEnvNode:
 
             # publish odometry
             self.pub_odometry.publish(odometry_msg)
+
+        if "PUB_COLLISION":
+            collision_msg = Bool()
+            collision_msg.data = self.observations.get("collided", False)
+            self.pub_collision.publish(collision_msg)
 
     def make_depth_camera_info_msg(self, header, height, width):
         r"""

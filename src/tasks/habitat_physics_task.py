@@ -112,9 +112,9 @@ class PhysicsNavigationTask(EmbodiedTask):
                     observations = self._sim.step_physics(agent_object, time_step)
                     # if collision occurred, quit the loop immediately
                     # NOTE: this is not working yet
-                    if self._sim.previous_step_collided:
-                       print("Collision detected")
-                       break
+                    # if self._sim.previous_step_collided:
+                    #    print("Collision detected")
+                    #    break
                 
                 # log position/rotation after stepping
                 # comment out when not collecting actuation error data
