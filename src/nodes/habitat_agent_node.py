@@ -248,7 +248,7 @@ class HabitatAgentNode:
         :returns: A ROS message of action command.
         """
         action_id = action["action"]
-        msg = ...  # type: Union[Twist, Int16]
+        msg = ...  
         msg = Int16()
         msg.data = action_id
 

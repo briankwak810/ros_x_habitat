@@ -219,7 +219,7 @@ class HabitatEnvNode:
             self.pub_rgb.get_num_connections() == 0
             # or self.pub_depth.get_num_connections() == 0
             # or self.pub_pointgoal_with_gps_compass.get_num_connections() == 0
-        ):
+        ): # comment depth and pointgoal out when using rgb-only agent e.g. nomad
             pass
 
         self.logger.info("env initialized")
@@ -727,6 +727,10 @@ def main():
         type=float,
         default=20.0,
     )
+    parser.add_argument(
+        "--change-env-vel-subscriber",
+        type=str, default=None
+    )
     args = parser.parse_args()
 
     # initialize the env node
@@ -737,6 +741,12 @@ def main():
         use_continuous_agent=args.use_continuous_agent,
         pub_rate=args.sensor_pub_rate,
     )
+
+    if args.change_env_vel_subscriber is not None:
+        env_node.sub.unregister()
+        env_node.sub = rospy.Subscriber(
+            args.change_env_vel_subscriber, Twist, env_node.callback, queue_size=env_node.sub_queue_size
+        )
 
     # run simulations
     env_node.simulate()
