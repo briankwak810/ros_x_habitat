@@ -1,5 +1,5 @@
 ENVIRONMENT:
-  MAX_EPISODE_STEPS: 200
+  MAX_EPISODE_STEPS: 40 #for human roaming dataset
   ITERATOR_OPTIONS:
     SHUFFLE: False
     GROUP_BY_SCENE: True

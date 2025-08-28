@@ -16,6 +16,7 @@ from src.constants.constants import (
 from src.utils import utils_logging
 import roslaunch
 from geometry_msgs.msg import Twist
+from ros_x_habitat.srv import Roam
 
 
 
@@ -127,6 +128,10 @@ class NomadHabitatROSEvaluator(HabitatSimEvaluator):
         # self.get_agent_time = rospy.ServiceProxy(
         #     self.get_agent_time_service_name, GetAgentTime
         # )
+
+        self.roam_service_name = f"{PACKAGE_NAME}/{self.env_node_name}/{ServiceNames.ROAM}" 
+        self.roam = rospy.ServiceProxy(self.roam_service_name, Roam)
+        self.video_frame_period = 60  # or whatever you want to use
 
     def evaluate(
         self,
